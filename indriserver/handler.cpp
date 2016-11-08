@@ -4,6 +4,8 @@
 
 #include <iostream>
 #include <queue>
+#include <regex>
+#include <boost/locale.hpp>
 #include <indri/LocalQueryServer.hpp>
 
 #include "handler.h"
@@ -17,6 +19,8 @@
 
 using nlohmann::json;
 
+std::regex re_meta_charset("<meta.*?charset=([^\"']+)",
+                           std::regex_constants::icase);
 
 bool Request::assertion(bool value, std::string const &message) {
     if (!value) {
@@ -61,10 +65,22 @@ public:
             indri::collection::CompressedCollection *collection = _repository.collection();
             std::unique_ptr<indri::api::ParsedDocument> document(collection->retrieve(documentID));
             if (request.assertion((bool) document, "Unknown document")) return;
+
+            // Convert - find encoding first...
+            std::string documentString(document->text);
+            auto words_begin = std::sregex_iterator(documentString.begin(), documentString.end(), re_meta_charset);
+            auto words_end = std::sregex_iterator();
+            for (std::sregex_iterator i = words_begin; i != words_end; ++i) {
+                std::string encoding = (*i)[1];
+                documentString = boost::locale::conv::to_utf<char>(documentString, encoding);
+                break;
+            }
+
+
             if (binary)
-                request.sendBinary(json(document->text).dump());
+                request.sendBinary(json(documentString).dump());
             else
-                request.send(json(document->text).dump());
+                request.send(json(documentString).dump());
         } else if (type == "bow") {
             indri::server::LocalQueryServer local(_repository);
 

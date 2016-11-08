@@ -225,6 +225,10 @@ Bienvenue sur la page d'aide pour les HackDays d'EARIA 2016. Vous trouverez ici 
     </p>
     
     
+    <p>
+        Vous pouvez <a href="docs/qrels_train.txt">télécharger le fichier de QRELS d'entraînement (train)</a>.
+    </p>
+
     <p>L'outil d'évaluation (en python) prend 3 paramètres:
     <ul>
     <li> le fichier de qrels</li>
@@ -966,7 +970,7 @@ Les résultats courants sont donnés sur le <a target="_blank" href="leaderboard
 <p class="cite">We are publishing pre-trained vectors trained on part of Google News dataset (about 100 billion words). The model contains 300-dimensional vectors for 3 million words and phrases. The phrases were obtained using a simple data-driven approach described in [2]. The archive is available here: <a href="data/GoogleNews-vectors-negative300.bin.gz">GoogleNews-vectors-negative300.bin.gz</a>.</p>
 
 <p>
-	Format binaire (vous pouvez les lire avec <a href="read_word2vec.py">ce programme python)</a>:
+	Format binaire (vous pouvez les lire avec <a href="code/read_word2vec.zip">ce programme python)</a>:
 	<ul>
 		<li>Première ligne: nombre de mots et dimension <em>d</em></li>
 		<li>Chaque ligne: mot suivi d'un espace, puis <em>d</em> nombres réels (<code>float32</code>)</li>

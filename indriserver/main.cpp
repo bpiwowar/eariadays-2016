@@ -69,6 +69,7 @@ void serve(std::string const &path, int port) {
     );
 
     _server.init_asio();
+    _server.set_reuse_addr(true);
     _server.listen(port);
     _server.start_accept();
 

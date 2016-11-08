@@ -5,7 +5,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 
 find_package(Indri REQUIRED)
 find_package(ZLIB REQUIRED)
-find_package(Boost COMPONENTS system program_options)
+find_package(Boost COMPONENTS system program_options locale)
 find_package(SQLite3 REQUIRED)
 
 include_directories("${INDRI_INCLUDE_DIR}" "${Boost_INCLUDE_DIRS}"
