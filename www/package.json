@@ -1,0 +1,30 @@
+{
+  "name": "www",
+  "version": "1.0.0",
+  "description": "",
+  "main": "webpack.config.js",
+  "bin": {
+    "www": "app.bundle.js"
+  },
+  "dependencies": {
+    "css-loader": "^0.25.0",
+    "highlight.js": "^9.8.0",
+    "jquery": "^3.1.1",
+    "jquery-ui": "^1.12.1",
+    "jquery.tocify": "^1.9.1",
+    "style-loader": "^0.13.1",
+    "webpack": "^1.13.3"
+  },
+  "devDependencies": {
+    "extract-text-webpack-plugin": "^1.0.1",
+    "file-loader": "^0.9.0",
+    "raw-loader": "^0.5.1",
+    "webpack-dev-server": "^1.16.2",
+    "webpack-livereload-plugin": "^0.9.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

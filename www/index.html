@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>EARIA 2016 - HackDays</title>
+	<meta charset="utf-8">
+	<script type="text/javascript" src="bin/app.bundle.js"></script>
+    <link rel="stylesheet" type="text/css" href="bin/app.css">
+	<style type="text/css">
+		.cite {
+			background: #eee;
+			font-style: italic;
+		}
+		p, div {
+			margin-bottom: 1rem;
+		}
+		h1, h2, h3 {
+			color: #a00;
+		}
+        div#main {
+            margin-left: 25%;
+        }
+
+        #toc li.tocify-item.active {
+            background: #0088cc;
+            color: white;
+        }
+	</style>
+</head>
+<body>
+<div id="toc"></div>
+<div id="main">
+<h1>Hackdays @ EARIA 2016 - Lyon</h1>
+
+Bienvenue sur la page d'aide pour les HackDays d'EARIA 2016. Vous trouverez ici les informations dont vous aurez besoin ; ces informations seront mises à jour en fonction de vos demandes !
+
+
+
+
+
+<!-- Karen -->
+
+    
+    <h1 id="presentation">Présentation du projet</h1>
+    <p><a href="docs/presentation.pdf">Slides</a></p>
+    <p>Nous vous demandons de faire:
+    <ul>
+    <li>un prototype de RI interactive fonctionnant sur le Disque B de la collection ClueWeb12.
+    </li>
+    <li>un (ou plusieurs runs) pour les sessions/requêtes de test fournies.</li>
+    </ul></p>
+    
+    
+    
+    <h1>TREC Session Track</h1>
+    <p>La <a href="http://ir.cis.udel.edu/sessions/">Session track</a> de TREC a eu lieu de 2010 à 2014. Nous nous interessons particulièrement
+    aux éditions 2013 et 2014.
+    Le résumé de ces 2 éditions:
+    <ul>
+        <li><a href="docs/2013_overview.pdf">Overview 2013</a></li>
+        <li><a href="docs/2014_overview.pdf">Overview 2014</a></li>
+    </ul>
+    </p>
+    <p>
+    Collection utilisée : <a href="http://lemurproject.org/clueweb12/">Clueweb12</a> (27 To, 733 millions de documents).
+    </p>
+    <p>Chacune de ces années, les participants ont eu à disposition un fichier de sessions de recherche.
+    Chaque session de recherche correspond à un <font face="courier">topic</font> (=sujet de recherche), à une ou plusieurs interactions, et à une requête finale (<font face="courier">currentquery</font>) pour laquelle il faut renvoyer des résultats.
+    </p>
+    
+    
+    <p><b>Exemple de session:</b></p>
+    <pre>
+
+&lt;session num="1" starttime="0"&gt;
+       &lt;topic num="102"&gt;&lt;desc&gt;You want to make cosmetic surgery....&lt;/desc&gt;&lt;/topic&gt;
+       &lt;interaction num="1" starttime="10.280644" &gt;
+          &lt;query&gt;wikipedia cosmetic laser treatment&lt;/query&gt;
+          &lt;results&gt;
+             &lt;result rank="1"&gt;
+                &lt;url&gt;http://www.veindirectory.org/content/varicose_veins.asp&lt;/url&gt;
+                &lt;title&gt;Varicose Veins - Vein Treatment, Removal, Surgery Information&lt;/title&gt;
+                &lt;snippet&gt;... concern but can lead to more severe problems such as leg pain, leg 
+                               swelling and leg cramps. View photos and find a varicose vein treatment 
+                               center. ...&lt;/snippet&gt;
+             &lt;/result&gt;
+             &lt;result rank="2"&gt;
+                &lt;url&gt;http://www.peachcosmeticmedicine.com/treatments-Laser-and-IPL-hair-removal.html&lt;/url&gt;
+                &lt;title&gt;Laser and IPL hair removal - Treatments - Peach Cosmetic ...&lt;/title&gt;
+                &lt;snippet&gt;Laser hair removal served as Dr Mahony's introduction to cosmetic medicine 
+                               back in 1999. ... Both our IPL and our laser offer skin chilling as part of
+                               the treatment. ...&lt;/snippet&gt;
+             &lt;/result&gt;
+
+                    ...
+
+             &lt;result rank="10"&gt;
+                &lt;url&gt;http://www.cosmeticsurgery10.com/index.html&lt;/url&gt;
+                &lt;title&gt;Cosmetic Surgery, Cosmetic Doctors, Cosmetic Physicians, and ...&lt;/title&gt;
+                &lt;snippet&gt;Cosmetic Surgery 10 is a resource that provides key information on cosmetic 
+                               surgeries focusing on plastic surgeries, dermatology, cosmetic dentists and 
+                               LASIK procedures.&lt;/snippet&gt;
+             &lt;/result&gt;
+          &lt;/results&gt;
+          &lt;clicked&gt;
+             &lt;click num="1" starttime="95.603468" endtime="120.565420"&gt;
+                &lt;rank&gt;10&lt;/rank&gt;
+             &lt;/click&gt;
+             &lt;click num="2" starttime="138.244467" endtime="181.841436&gt;
+                &lt;rank&gt;2&lt;/rank&gt;
+             &lt;/click&gt;
+          &lt;/clicked&gt;
+       &lt;/interaction&gt;
+       &lt;interaction num="2"&gt;
+                ...
+       &lt;/interaction&gt;
+
+                ...
+
+       &lt;currentquery starttime="252.659006"&gt;
+          &lt;query&gt;uses for cosmetic laser treatment&lt;/query&gt;
+       &lt;/currentquery&gt;
+&lt;/session&gt;
+
+
+</pre>
+    
+    
+    <p>Il y a 3 t&acirc;ches de recherche évaluées dans TREC:
+    <ul>
+        <li>RL1: renvoyer des résultats pour la requête <font face="courier">currentquery</font> sans prendre en compte la session, c'est à dire indépendamment des requêtes précédentes et de leurs résultats associés dans la session
+        </li>
+        <li>RL 2: renvoyer des résultats pour la requête <font face="courier">currentquery</font> en prenant en compte les infos de la session
+        </li>
+        <li>RL 3: renvoyer des résultats pour la requête <font face="courier">currentquery</font> en prenant en compte tout le log des sessions, c'est à dire en utilisant des infos d'autres sessions.
+        </li>
+    </ul>
+
+    Dans tous les cas, il est <b>interdit</b> d'utiliser les informations contenues dans la balise <font face="courier">topic</font>.</p>
+    
+    
+    
+    
+    <h1 id="dispo">A votre disposition...</h1>
+    
+    <p>Les données d'origine fournis par les organisateurs de la t&acirc;che TREC ont été nettoyées, fusionnées, 
+    puis séparées en 2 parties, afin de mettre à votre disposition un jeu d'apprentissage et un jeu de test.
+    Les identifiants de sessions et topics ne sont plus les mêmes que lors des t&acirc;ches TREC, vous ne pouvez donc plus utiliser les données fournies directment par les organisateurs, mais plut&ocirc;t celles ci-dessous.</p>
+    
+    
+    <h3 id="acces">Accès à la collection (Disk B - Clueweb 12)</h3>
+    <p>
+    La collection Clueweb 12-Disk B est un sous-ensemble de la collection Clueweb12, composé de 53 millions de documents (2 To).
+    </p>
+    
+    <p>Accès à l'index: voir section <a href="#indri">Indri</a></p>
+    
+    <p><b>Attention</b>: les sessions et les qrels ont été contruits sur la collection ClueWeb entière.
+    Il se peut donc que certains documents présents dans ces fichiers ne soient pas accessibles via l'API. 
+    
+    <h3 id="sessions">Sessions</h3>
+    
+    <p>Le fichier de sessions (format XML) contient les sessions correspondant aux 78 topics.
+    Il y a en tout 1191 sessions. Un topic correspond donc à plusieurs sessions.<br/>
+    <a href="docs/sessions.xml">Sessions</a></br>
+    <a href="docs/ReadSessions.java">Programme Java très simple de lecture du fichier de sessions</a></p>
+    </p>
+    
+    
+    
+    <p>Topics:
+    <ul>
+    <li><a href="docs/topics_train.txt">Topics d'apprentissage (60)</a></li>
+    <li><a href="docs/topics_test.txt">Topics de test (18)</a></li>
+    </ul>
+    </p>
+    
+    
+    <p>Correspondance sessions/topics:
+    <ul>
+    <li><a href="docs/sessiontopicmap_train.txt">Apprentissage (sessiontopicmap_train.txt)</a></li>
+    <li><a href="docs/sessiontopicmap_test.txt">Test (sessiontopicmap_test.txt)</a></li>
+    </ul>
+    </p>
+    
+    
+    
+    <h3 id="eval">Runs et évaluation</h3>
+    
+    <p>Pour évaluer votre système de RI interactive, vous pouvez au choix proposer une approhe correspondant à RL2 ou RL3 selon le vocabulaire TREC.</p>
+    
+    <p>Pour rappel, il est interdit d'utiliser les informations des balises <font face="courier">topic</font>.</p>
+    
+    
+    <h3>Format d'un run</h3>
+    
+    
+    <p>Un run est un fichier texte dans lequel sont stockées vos résultats pour les sessions de test/apprentissage. Il a le format suivant:
+    <ul>
+    <li>la première colonne est le numéro de session</li>
+    <li>la seconde colonne contient la cha&icirc;ne de caractères "Q0"</li>
+    <li>la troisième colonne est l'identifiant du document, trouvé dans le champ &lt;DOCNO&gt; du document</li>
+    <li>la quatrième colonne est le rang du document pour la requête. Le rang doit débuter à 1, être croissant et unique, et vous ne pouvez pas renvoyer plus de 2000 documents par requête </li>
+    <li>la cinquième colonne est le score du document (entier ou float). Le score doit être décroissant. </li>
+    <li>la sixième colonne est votre identifiant de run</li>
+    </ul>
+    </p>
+    
+    
+    <p> Les runs pour les données d'apprentissage doivent être fait sur les sessions présentes dans le fichier sessiontopicmap_train.txt. (111 sessions)</p>
+    
+    <p> Les runs pour les données de test doivent être fait sur les sessions présentes dans le fichier sessiontopicmap_test.txt. (37 sessions)</p>
+    
+    
+    
+    <p><a href="docs/run_train.txt">Un exemple de run sur les topics d'apprentissage.</a></p>
+    
+    
+    <h3 id="eval">Évaluation</h3>
+    
+    <p>Les jugements de pertinence ont été effectués sur une échelle de 6:
+    <ul>
+    <li>Non pertinent : -2 (spam); 0 (non pertinent)</li>
+    <li>Pertinent: 1 (pertinent), 2 (très pertinent), 3 (clé), 4 (navigationnel)</li>
+    </ul>
+    </p>
+    
+    
+    <p>L'outil d'évaluation (en python) prend 3 paramètres:
+    <ul>
+    <li> le fichier de qrels</li>
+    <li> le fichier de correspondance sessions/topics</li>
+    <li> votre run formatté comme expliqué ci-dessus</li>
+    </ul>
+    <a href="docs/eval.zip">Script d'évaluation</a>
+    </p>
+    
+    <p>Lancement du programme:</p>
+    
+    <pre> python session_eval_main.py --qrel_file qrels_train.txt --mapping_file sessiontopicmap_train.txt --run_file run_train.txt 
+    </pre>
+    
+    <p><a href="docs/run_train.result.txt">Fichier de résultat associé au run exemple</a></p>
+    
+    <h3 id="test">Evaluation (sur les données de test)</h3>
+    <p>Envoi du/des runs de test pour évaluation - Voir section <a href="#srun">Soumettre un run</a></p>
+    
+    
+    
+    
+    <p>Baseline à battre (fournie par les organisateurs de TREC): MAP: 0.1352, P@10: 0.3611.</p>
+    
+
+
+<!-- /Karen -->
+
+
+
+
+
+
+
+<h1 id="indri">Serveur Indri</h1>
+
+<p>Un serveur contenant la collection <a href="">ClueWeb12-B</a> a été mis en place. L'URL est <code>ws://www.earia2016.org/</code> et n'est accessible que depuis la salle de cours d'EARIA, une fois connecté au réseau.</p>
+
+<p>Des exemples de code sont donnés en Python et en C++ dans <a href="code/clients.tar.gz">cette archive</a></p>
+
+<p>La communication se fait par messages JSON <code>{"command": COMMANDE, ...}</code>. Les commandes disponibles sont les suivantes</p>
+
+<h2>Question</h2>
+
+<h3>Retrieval Parameters</h3>
+
+<p>Les paramètres sont ceux d'Indri, mais en utilisant le format JSON plutôt que XML.
+Seul le paramètre "query" est nécessaire, les autre champs sont optionnels.
+</p>
+
+<dl>
+<dt>count </dt>
+<dd>an integer value specifying the maximum number of results to return for a given query.</dd>
+<dt>query </dt>
+<dd><p class="startdd"><a class="el" href="#indri-ql">Queries with the Indri language</a> to run. The query element may take numerous optional parameters described latter. For example,
+</p>
+<pre><code> [{ "text":  "combine(query terms)", "number": 1 }, {  "text":  "combine(query terms 2)", "number": 2 }]</code></pre>
+<p>The optional parameters are: </p>
+<dl>
+<dt>number</dt>
+<dd>The query number or identifier. This may be a non-numeric symbol. The default is to number the queries in the parameters in order, starting with 0. This element may appear 0 or 1 times. </dd>
+<dt>text</dt>
+<dd>The query text, eg, "#combine(query terms)". This element may appear 0 or 1 times and must be used if any of the other parameters are supplied. </dd>
+<dt>workingSetDocno</dt>
+<dd>The external document id of a document to add to the working set for the query. This element may appear 0 or more times. When specified, query evaluation is restricted to the document ids specified. </dd>
+<dt>feedbackDocno</dt>
+<dd>The external document id of a document to add to the relevance feeedback set for the query. This element may appear 0 or more times. When specified, query expansion is performed using only the document ids specified. It is still necessary to specify a non-zero value for the fbDocs parameter when specifying feedbackDocno elements. </dd>
+</dl>
+<p class="enddd"></p>
+</dd>
+<dt>rule </dt>
+<dd><p class="startdd">specifies the smoothing rule (TermScoreFunction) to apply. Format of the rule is:<br>
+</p>
+<p><code> ( key ":" value ) [ "," key ":" value ]* </code> </p>
+<p>Here's an example rule in command line format:<br>
+</p>
+<p><code>-rule=method:linear,collectionLambda:0.2,field:title</code> </p>
+<p>and in parameter file format:<br>
+ <code> &lt;rule&gt;method:linear,collectionLambda:0.2,field:title&lt;/rule&gt; </code></p>
+<p></p>
+<p>This corresponds to Jelinek-Mercer smoothing with background lambda equal to 0.2, only for items in a title field.</p>
+<p></p>
+<p>If nothing is listed for a key, all values are assumed. So, a rule that does not specify a field matches all fields. This makes <code>-rule=method:linear,collectionLambda:0.2</code> a valid rule.</p>
+<p></p>
+<p>Valid keys: </p>
+<dl>
+<dt>method</dt>
+<dd>smoothing method (text) </dd>
+<dt>field</dt>
+<dd>field to apply this rule to </dd>
+<dt>operator </dt>
+<dd>type of item in query to apply to { term, window } </dd>
+</dl>
+<p></p>
+<p class="enddd">Valid methods: </p>
+<dl>
+<dt>dirichlet</dt>
+<dd>(also 'd', 'dir') (default mu=2500) </dd>
+<dt>jelinek-mercer</dt>
+<dd>(also 'jm', 'linear') (default collectionLambda=0.4, documentLambda=0.0), collectionLambda is also known as just "lambda", either will work  </dd>
+<dt>twostage</dt>
+<dd>(also 'two-stage', 'two') (default mu=2500, lambda=0.4) </dd>
+</dl>
+<p>If the rule doesn't parse correctly, the default is Dirichlet, mu=2500.  </p>
+</dd>
+<dt>stopper </dt>
+<dd>a complex element containing one or more subelements named word, specifying the stopword list to use. Specified as &lt;stopper&gt;&lt;word&gt;stopword&lt;/word&gt;&lt;/stopper&gt; and as <code>-stopper.word=stopword</code> on the command line. This is an optional parameter with the default of no stopping. </dd>
+<dt>maxWildcardTerms </dt>
+<dd><em>(optional)</em> An integer specifying the maximum number of wildcard terms that can be generated for a synonym list for this query or set of queries. If this limit is reached for a wildcard term, an exception will be thrown. If this parameter is not specified, a default of 100 will be used.  </dd>
+</dl>
+<h3>Baseline (non-LM) retrieval</h3>
+<dl>
+<dt>baseline </dt>
+<dd><p class="startdd">Specifies the baseline (non-language modeling) retrieval method to apply. This enables running baseline experiments on collections too large for the Lemur RetMethod API. When running a baseline experiment, the queries may not contain any <a class="el" href="http://lemur.sourceforge.net/indri/namespaceindri.html" title="namespaces within the indri system">indri</a> query language operators, they must contain only terms.</p>
+<p></p>
+<p>Format of the parameter value:<br>
+</p>
+<p><code> (tfidf|okapi) [ "," key ":" value ]* </code> </p>
+<p>Here's an example rule in command line format:<br>
+</p>
+<p><code>-baseline=tfidf,k1:1.0,b:0.3</code> </p>
+<p>and in parameter file format:<br>
+ <code> &lt;baseline&gt;tfidf,k1:1.0,b:0.3&lt;/baseline&gt; </code></p>
+<p></p>
+<p class="enddd">Methods: </p>
+<dl>
+<dt>tfidf </dt>
+<dd><p class="startdd">Performs retrieval via tf.idf scoring as implemented in lemur::retrieval::TFIDFRetMethod using BM25TF term weighting. Pseudo-relevance feedback may be performed via the parameters below. </p>
+<p></p>
+<p>Parameters (optional): </p>
+<dl>
+<dt>k1</dt>
+<dd>k1 parameter for term weight (default 1.2) </dd>
+<dt>b</dt>
+<dd>b parameter for term weight (default 0.75)  </dd>
+</dl>
+<p class="enddd"></p>
+</dd>
+<dt>okapi </dt>
+<dd><p class="startdd">Performs retrieval via Okapi scoring as implemented in lemur::retrieval::OkapiRetMethod. Pseudo-relevance feedback may &lt;bold&gt;not&lt;/bold&gt; be performed with this baseline method. </p>
+<p></p>
+<p class="enddd">Parameters (optional): </p>
+<dl>
+<dt>k1</dt>
+<dd>k1 parameter for term weight (default 1.2) </dd>
+<dt>b</dt>
+<dd>b parameter for term weight (default 0.75) </dd>
+<dt>k3</dt>
+<dd>k3 parameter for query term weight (default 7)  </dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+
+<h3>Pseudo-Relevance Feedback Parameters</h3>
+<dl>
+<dt>fbDocs </dt>
+<dd>an integer specifying the number of documents to use for feedback. Specified as &lt;fbDocs&gt;number&lt;/fbDocs&gt; in the parameter file and as <code>-fbDocs=number</code> on the command line. </dd>
+<dt>fbTerms </dt>
+<dd>an integer specifying the number of terms to use for feedback. Specified as &lt;fbTerms&gt;number&lt;/fbTerms&gt; in the parameter file and as <code>-fbTerms=number</code> on the command line. </dd>
+<dt>fbMu </dt>
+<dd>a floating point value specifying the value of mu to use for feedback. Specified as &lt;fbMu&gt;number&lt;/fbMu&gt; in the parameter file and as <code>-fbMu=number</code> on the command line. </dd>
+<dt>fbOrigWeight </dt>
+<dd>a floating point value in the range [0.0..1.0] specifying the weight for the original query in the expanded query. Specified as &lt;fbOrigWeight&gt;number&lt;/fbOrigWeight&gt; in the parameter file and as <code>-fbOrigWeight=number</code> on the command line. </dd>
+</dl>
+
+
+
+
+
+
+
+<h2 id="indri-ql">Indri Query Language</h2>
+<h3 id="intro">INTRODUCTION</h3>
+The Indri query language, based on the Inquery query language, was designed to be robust. It can handle both
+simple keyword queries and extremely complex queries. Such a query language sets Indri apart from many other
+available search engines. It allows complex phrase matching, synonyms, weighted expressions, Boolean filtering,
+numeric (and dated) fields, and the extensive use of document structure (fields), among others.
+
+<br><br>
+Although Indri handles unstructured documents, many of the query language features make use of structured (tagged)
+documents. Consider the following document:
+
+<br><br>
+<div class="example">
+<pre>
+&lt;html&gt;
+&lt;head&gt;
+&lt;title>Department Descriptions&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+The following list describes ...
+&lt;h1>Agriculture&lt;/h1&gt; ...
+&lt;h1>Chemistry&lt;/h1&gt; ...
+&lt;h1>Computer Science&lt;/h1&gt; ...
+&lt;h1>Electrical Engineering&lt;/h1&gt; ...
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+</div>
+
+<br>
+In Indri, a <i><b>document</b></i> is viewed as a sequence of text that may contain arbitrary tags. In the example
+above, the document consists of text marked up with HTML tags.
+
+<br><br>
+For each tag type <tt>T</tt> within a document (i.e. <tt>title</tt>, <tt>body</tt>, <tt>h1</tt>, etc), we define the <i><b>context</b></i> of <tt>T</tt> to be all of the text and tags that appear within tags of type <tt>T</tt>. In the example above, all of the text and tags appearing between <tt>&lt;body&gt;</tt> and <tt>&lt;/body&gt;</tt> tags defines the body context. A single context is generated for each unique tag name. Therefore, a context defines a subdocument. Note that because of nested tags certain word occurrences may appear in many contexts. It is also the case that there may be nested contexts. For example, within the <tt>&lt;body&gt;</tt> context there is a nested <tt>&lt;h1&gt;</tt> context made up of all of the text and tags that appear within the body context and within <tt>&lt;h1&gt;</tt> and <tt>&lt;/h1&gt;</tt> tags. Here are the tags for the <tt>title</tt>, <tt>h1</tt>, and <tt>body</tt> contexts:
+
+<br><br>
+<tt>title</tt> context:
+<div class="example">
+<pre>
+&lt;title>Department Descriptions&lt;/title&gt;
+</pre>
+</div>
+
+<br><br>
+<tt>h1</tt> context:
+<div class="example">
+<pre>
+&lt;h1>Agriculture&lt;/h1&gt;
+&lt;h1>Chemistry&lt;/h1&gt; ...
+&lt;h1>Computer Science&lt;/h1&gt; ...
+&lt;h1>Electrical Engineering&lt;/h1&gt; ...
+</pre>
+</div>
+
+<br><br>
+<tt>body</tt> context:
+<div class="example">
+<pre>
+&lt;body&gt;
+The following list describes ...
+&lt;h1>Agriculture&lt;/h1&gt; ...
+&lt;h1>Chemistry&lt;/h1&gt; ...
+&lt;h1>Computer Science&lt;/h1&gt; ...
+&lt;h1>Electrical Engineering&lt;/h1&gt; ...
+&lt;/body&gt;
+</pre>
+</div>
+
+<br><br>
+Finally, each context is made up of one or more <i><b>extents</b></i>. An extent is a sequence of text that appear within a single begin/end tag pair of the same type as the context. For the example above, in the <tt>&lt;h1&gt;</tt> context, there are extents "<tt>&lt;h1&gt;</tt>agriculture<tt>&lt;/h1&gt;</tt>", "<tt>&lt;h1&gt;</tt>chemistry<tt>&lt;h1&gt;</tt>", etc.  Both the title and body contexts contain only a single extent because there is only a single pair of <tt>&lt;title&gt;</tt> ... <tt>&lt;/title&gt;</tt> and  <tt>&lt;body&gt;</tt> ...  <tt>&lt;/body&gt;</tt> tags, respectively. The number of extents for a given tag type <tt>T</tt> is determined by the number of sequences of the form:  <tt>&lt;T&gt;</tt> text  <tt>&lt;/T&gt;</tt> that occur within the document.
+
+<br><br>
+The remainder of this document provides a broad overview of the language. For more specific details, see the
+Indri-related research papers and presentations.
+
+
+<h3 id="grammar">QUERY LANGUAGE GRAMMAR</h3>
+<pre>
+query   :=  ( beliefOp )+
+
+beliefOp  :=  "#weight" ( extentRestrict )? weightedList
+    | "#combine" ( extentRestrict )? unweightedList
+    | "#or" ( extentRestrict )? unweightedList
+    | "#not" ( extentRestrict )? '(' beliefOp ')'
+    | "#wand" ( extentRestrict )? weightedList
+    | "#wsum" ( extentRestrict )? weightedList
+    | "#max" ( extentRestrict )? unweightedList
+    | "#prior" '(' FIELD ')'
+    | "#scoreifnot | #filrej" '(' unscoredTerm beliefOp ')'
+    | "#scoreif | #filreq" '(' unscoredTerm beliefOp ')'
+    | termOp ( '.' fieldList )? ( '.' '(' fieldList ')' )?
+
+termOp    :=  ( "#od" POS_INTEGER | "#od" | '#' POS_INTEGER  ) '(' ( unscoredTerm )+ ')'
+    | ( "#uw" POS_INTEGER | "#uw" ) '(' ( unscoredTerm )+ ')'
+    | "#band" '(' ( unscoredTerm )+ ')'
+    | "#datebefore" '(' date ')'
+    | "#dateafter" '(' date ')'
+    | "#datebetween" '(' date ' ' date ')'
+    | "#dateequals" '(' date ')'
+    | "<" ( unscoredTerm )+ ">"
+    | "{" ( unscoredTerm )+ "}"
+    | "#syn" '(' ( unscoredTerm )+ ')'
+    | "#wsyn" '(' ( weight unscoredTerm )+ ')'
+    | "#any" ':' TERM
+    | "#any" '(' TERM ')'
+    | "#less" '(' TERM integer ')'
+    | "#greater" '(' TERM integer ')'
+    | "#between" '(' TERM integer integer ')'
+    | "#equals" '(' TERM integer ')'
+    | "#base64" '(' ( "\t" | " " )* ( BASE64_CHAR )+ ( "\t" | " " )* ')'
+    | "#base64quote" '(' ( '\t' | ' ' )* ( BASE64_CHAR )+ ( '\t' | ' ' )* ')'
+    | '"' text '"'
+    | "#wildcard" '(' TERM ')'
+    | TEXT_TERM '*'
+    | POS_INTEGER
+    | POS_FLOAT
+    | TERM
+
+extentRestrict  :=  '[' "passage" POS_INTEGER ':' POS_INTEGER ']'
+    | '[' FIELD ']'
+
+weightedList  :=  '(' ( weight beliefOp )+ ')'
+
+unweightedList  :=  '(' ( beliefOp )+ ')'
+
+unscoredTerm  :=  termOp ( '.' fieldList )?
+
+fieldList :=  FIELD ( ',' FIELD )*
+
+date    :=  POS_INTEGER '/' TERM '/' POS_INTEGER
+    | POS_INTEGER TERM POS_INTEGER
+    | TERM
+
+integer   :=  POS_INTEGER
+    | NEG_INTEGER
+
+weight    :=  POS_FLOAT
+    | POS_INTEGER
+
+TERM    :=  ( '0'..'9' )+ ('a'..'z' | 'A'..'Z' | '-' | '_')
+    | TEXT_TERM
+
+FIELD   :=  TEXT_TERM
+
+TEXT_TERM :=  ( '\u0080'..'\u00ff' | ('a'..'z' | 'A'..'Z' | '0'..'9' | '-' | '_') )+
+
+POS_INTEGER :=  ( '0'..'9' )+
+NEG_INTEGER :=  '-' ( '0'..'9' )+
+POS_FLOAT :=  ( '0'..'9' )+ '.' ( '0'..'9' )*
+BASE64_CHAR :=  ('a'..'z' | 'A'..'Z' | '0'..'9' | '+' | '/')
+
+</pre>
+
+<h3 id="prox">TERMS / PROXIMITY</h3>
+
+Terms are the basic building blocks of Indri queries. Terms come in the form of single term, ordered and
+unordered phrases, synonyms, among others. In addition, there are a number of options that allow you to
+specify if a term should appear within a certain field, or if it should be scored within a given context.
+
+<h4>Terms:</h4>
+<ul>
+<li>term -- stemmed / normalized term
+<li>"term" -- unstemmed / unnormalized term
+<li>#base64( ... ) -- converts from base64 -> ascii and then stems and normalizes. useful for including non-parsable terms in a query
+<li>#base64quote( ... ) -- same as #base64 except the the ascii term is unstemmed and unnormalized
+</ul>
+
+<i>Examples:</i>
+<ul>
+<li>dogs
+<li>"NASA"
+<li>#base64(Wyh2Lm4ucC5hLnIucy5hLmIubC5lLild) -- equivalent to query term [(u.n.p.a.r.s.a.b.l.e.)]
+</ul>
+
+<h4>Proximity terms:</h4>
+<ul>
+<li>#odN( ... ) -- ordered window -- terms must appear ordered, with at most N-1 terms between each
+<li>#N( ... ) -- same as #odN
+<li>#od( ... ) -- unlimited ordered window -- all terms must appear ordered anywhere within current context
+<li>#uwN( ... ) unordered window -- all terms must appear within window of length N in any order
+<li>#uw( ... ) -- unlimited unordered window -- all terms must appear within current context in any order
+</ul>
+
+<i>Examples:</i>
+<ul>
+<li>#1(white house) -- matches "white house" as an exact phrase
+<li>#2(white house) -- matches "white * house" (where * is any word or null)
+<li>#uw2(white house) -- matches "white house" and "house white"
+</ul>
+
+<h4>Synonyms:</h4>
+<ul>
+<li>#syn( ... )
+<li>{ ... }
+<li>&lt; ... &gt;
+<li>#wsyn( ... )
+</ul>
+
+The first three expressions are equivalent. They each treat all of the expressions listed as synonyms. The #wsyn
+operator treats the terms as synonyms, but allows weights to be assigned to each term.
+<p>
+
+<i>Examples:</i>
+<ul>
+<li>#syn( #1(united states) #1(united states of america) )
+<li>{dog canine}
+<li>&lt;#1(light bulb) lightbulb&gt;
+<li>#wsyn( 1.0 donald 0.8 don 0.5 donnie 0.2 donny )
+</ul>
+
+NOTE: The arguments given to this operator can only be term/proximity expressions.
+<p>
+
+  <h4 id="wildcard">Wildcard Operations:</h4>
+  <p>
+  As of version 4.4, the Indri Query Language now supported wildcard terms in the form
+  of suffix-only wildcard operations. To specify a wildcard, use the <tt>#wildcard</tt>
+  operator or place an asterisk (*) at the end of term. Note that only suffix-based
+  wildcards are available at this time - that is, a wildcard term must have at least one
+  character at the beginning and the wildcard operator (*) must occur at the end.
+  </p>
+  <p>
+  Since the wildcard operator will create a synonym list of available terms, it is necessary
+  for performance reasons to limit the number of terms generated for any given wildcard operator.
+  The default maximum number of synonyms generated is 100 for every wildcard term. This can be
+  overridden in the query parameters by the use of the <tt>&lt;maxWildcardTerms&gt;</tt> parameter.
+  If the limit is breached, an exception will be thrown.
+  </p>
+
+  <p>
+  <i>Examples:</i>
+  <ul>
+    <li><tt>#wildcard( lem ) </tt> - would match &quot;lemur&quot;, &quot;lemming&quot;, etc.</li>
+    <li><tt>lem*</tt> - would also match &quot;lemur&quot;, &quot;lemming&quot;, etc.</li>
+    <li><tt>le*ur</tt> - <i>will actually generate two tokens - &quot;le*&quot; and &quot;ur&quot;.</i> You should ensure that you use only suffix-based wildcards.</li>
+  </ul>
+  </p>
+
+
+<h4>"Any" operator:</h4>
+<ul>
+<li>#any -- used to match extent types
+</ul>
+
+<i>Examples:</i>
+<ul>
+<li>#any:PERSON -- matches any occurence of a PERSON extent. Note that the syntax #any(PERSON) is also accepted.
+<li>#1(napolean died in #any:DATE) -- matches exact phrases of the form: "napolean died in &lt;date&gt;...&lt;/date&gt;"
+</ul>
+
+<h4>Field restriction / evaluation:</h4>
+<ul>
+<li>expression.f1,,...,fN(c1,...,cN) -- matches when the expression appears
+in field f1 AND f2 AND ... AND fN and evaluates the expression using the
+language model defined by the concatenation of contexts c1...cN within the
+document.
+</ul>
+
+<i>Examples:</i>
+<ul>
+<li>dog.title -- matches the term dog appearing in a title extent (uses
+document language model)
+
+<li>#1(trevor strohman).person -- matches the phrase "trevor strohman" when it
+appears in a person extent (uses document language model)
+
+<li>dog.(title) -- evaluates the term based on the title language model for
+the document
+
+<li>#1(trevor strohman).person.(header) -- builds a language model from all of
+the "header" text in the document and evaluates #1(trevor strohman).person
+in that context (matches only the exact phrase appearing within a person
+extent within the header context)
+</ul>
+
+<h3 id="belief">COMBINING BELIEFS</h3>
+
+Belief operators allow you to combine beliefs (scores) about terms, phrases, etc. There are both unweighted
+and weighted belief operators. With the weighted operators, you can assign varying weights to certain
+expressions. This allows you to control how much of an impact each expression within your query has on the
+final score.
+
+<h4>Belief operators:</h4>
+<ul>
+<li>#combine
+<li>#weight
+<li>#not
+<li>#max
+<li>#or
+<li>#band (boolean and)
+<li>#wsum
+<li>#wand (weighted and)
+</ul>
+
+<i>Examples:</i>
+<ul>
+<li>#combine( &lt;dog canine&gt; training )
+<li>#combine( #1(white house) &lt;#1(president bush) #1(george bush)&gt; )
+<li>#weight( 1.0 #1(white house) 2.0 #1(easter egg hunt) )
+</ul>
+
+NOTE: If you are unsure which belief operator to use, it always "safest" to default to
+using the #combine or #weight operator. These operators are often the best choice for
+combining evidence. NEVER use #wsum or #wand unless you really know what you're doing!
+
+<h4>Extent / Passage retrieval:</h4>
+<ul>
+<li>#beliefop[field]( query ) -- evaluates #beliefop( query ) for all extents
+of type "field" in the document and returns a score for each. The language
+model used to evaluate the query is formed from the text of the extent.
+<li>#beliefop[passageWIDTH:INC]( query ) -- evaluates #beliefop( query ) for every
+fixed length passage of length WIDTH terms. The passage window is slid over the text
+in increments of INC terms. The language model used to evaluate the query is formed
+from the text within the current passage.
+</ul>
+
+<i>Example:</i>
+<ul>
+<li>#combine[sentence]( #1(napolean died in #any:DATE ) ) -- returns a scored
+list of sentence extents that match the given query
+<li>#combine[passage100:50]( #1(napolean died in #any:DATE ) ) -- returns a scored
+list of passages (of length 100) that match the given query.
+</ul>
+
+The slides found <a href="http://ciir.cs.umass.edu/~metzler/presentations/indri-labmeeting-summer04.pdf">here</a> discuss
+more of the details and gives further examples.
+
+<!-- <h4 id="accessingstructure">Accessing children, parent and ancestor extents / passages:</h4>
+Beginning with the Lemur Toolkit version 4.3.2 and Indri version 2.3.2, it is possible to reference parent and ancestor extents.
+<ul>
+  <li>use the <tt>.\<i>field</i></tt> operator to access a child reference</li>
+  <li>use the <tt>./<i>field</i></tt> operator to access a parent reference</li>
+  <li>use the <tt>.//<i>field</i></tt> operator to access an ancestor reference</li>
+</ul>
+<i>Example:</i>
+<ul>
+  <li>#combine[section]( bootstrap #combine[./title]( methodology ) ) -- rank sections matching <tt>bootstrap</tt> where the section's <tt>title</tt> also matches <tt>methodology</tt></li>
+</ul>
+
+<i>Note: </i> if child, parent, or ancestor queries are slow, you may want to be certain to index the specified fields explicitly as an ordinal. This speeds things up at the cost of a minimal amount of disk space.
+In the example above (&quot;title&quot;), the following would be placed in the build index parameters:<br>
+<pre>
+  &lt;field&gt;
+    &lt;name&gt;title&lt;/name&gt;
+    &lt;ordinal&gt;true&lt;/ordinal&gt;
+  &lt;/field&gt;
+</pre> -->
+
+<h3 id="filter">FILTER OPERATORS</h3>
+
+Filter operators allow you to score only a subset of an entire collection by filtering out those documents
+that actually get scored.
+
+<h4>Filter operators:</h4>
+<ul>
+<li>#scoreif (alias: #filreq) -- filter require
+<li>#scoreifnot (alias: #filrej) -- filter reject
+</ul>
+
+<i>Examples:</i>
+<ul>
+<li>#scoreif( sheep #combine(dolly cloning) ) -- only consider those documents matching the query "sheep" and rank
+them according to the query #combine(dolly cloning). This query could also be expressed as &quot#filreq( sheep #combine(dolly cloning) )&quot;
+<li>#scoreifnot( parton #combine(dolly cloning) ) -- only consider those documents NOT matching the query "parton" and rank them according to the query #combine(dolly cloning).
+  This query could also be expressed as &quot;#filrej( parton #combine(dolly cloning) )&quot;.
+</ul>
+
+NOTE: first argument must always be a term/proximity expression
+
+<h3 id="numeric">NUMERIC / DATE FIELD OPERATORS</h3>
+
+Numeric and date field operators provide a number of facilities for matching different criteria. These operators
+are very useful when used in combination with the filter operators.
+
+<h4>General numeric operators:</h4>
+<ul>
+<li>#less( F N ) -- matches numeric field extents of type F if value &lt; N
+<li>#greater( F N ) -- matches numeric field extents of type F if value &gt; N
+<li>#between( F N_low N_high ) -- matches numeric field extents of type F if N_low &lt;= value &lt;= N_high
+<li>#equals( F N ) -- matches numeric field extents of type F if value == N
+</ul>
+
+<h4>Date operators:</h4>
+<ul>
+<li>#dateafter( D ) -- matches numeric "date" extents if date is after D
+<li>#datebefore( D ) -- matches numeric "date" extents if date is before D
+<li>#datebetween( D_low D_high ) -- matches numeric "date" extents if D_low &lt; date &lt; D_high
+<li>#dateequals( D ) -- matches numeric "date" extents if date == D
+</ul>
+
+<i>Acceptable date formats:</i>
+<ul>
+<li>11 january 2004
+<li>11-JAN-04
+<li>11-JAN-2004
+<li>January 11 2004
+<li>01/11/04 (MM/DD/YY)
+<li>01/11/2004 (MM/DD/YYYY)
+</ul>
+
+<i>Examples:</i>
+<ul>
+<li>#filreq(#less(READINGLEVEL 10) george washington) -- if each document in a collection contained a
+numeric tag that specified the reading level of the document, then this query will only retrieve
+documents that have a reading level below grade 10 and documents will be ranked according to the
+query "george washington".
+<li>#combine( european history #datebetween( 01/01/1800 01/01/1900 ) ) -- such a query may be
+constructed to find information about 19th century european history, as this query will find
+pages that discuss "european history" and contain 19th century dates.
+</ul>
+
+NOTE: The general numeric operators only work on indexed numeric fields, whereas the date
+operators are only applicable to a specially indexed numeric field named "date". See the
+indexing documentation for more on numeric fields.
+
+<h3 id="prior">DOCUMENT PRIORS</h3>
+
+Document priors allow you impose a "prior probability" over the documents in a collection.
+
+<h4>Prior</h4>
+<ul>
+<li>#prior( NAME ) -- creates the document prior specified by the name given
+</ul>
+
+<i>Example:</i>
+<ul>
+<li>#combine(#prior(RECENT) global warming) -- we might create a prior named RECENT to be used to
+give greater weight to documents that were published more recently.
+</ul>
+
+<h3 id="applications">APPLICATIONS</h3>
+
+Here we list suggested uses of the language for several common information retrieval tasks.
+
+<h4>Ad Hoc Retrieval (Query Likelihood)</h4>
+Ad hoc retrieval is the standard information retrieval task of finding documents that are topically
+relevant to a given information need (query). One common probabilistic approach to ad hoc retrieval
+is the query likelihood retrieval paradigm from language modeling. It is very simple to construct an
+Indri query that ranks documents the same as query likelihood. For the query, "literacy rates africa",
+we construct the following Indri query:
+
+<br><br>
+<div class="example">
+<pre>
+#combine( literacy rates africa )
+</pre>
+</div>
+
+<br>
+This returns a ranked list that is exactly equivalent to the query likelihood ranking (under the given
+smoothing conditions).
+
+<h4>Pseudo-Relevance Feedback / Query Expansion</h4>
+Both pseudo-relevance feedback and query expansion methods typically begin
+with some intial query, do some
+processing, and then return a list of expansion terms. The original query is
+then augmented with the
+expansion terms and rerun. 
+
+<br><br>
+Indri's pseudo-relevance feedback mechanism is an adaptation of
+Lavrenko's relevance models.
+
+<br><br>
+The following is a basic summary of the process:
+<ol>
+<li>Retrieve documents using original query, which results in a ranked
+list ordered by P( I | D )
+<li>Compute relevance model, P(r | I), over representation concepts
+(features) using top <i>fbDocs</i> documents from original ranked list
+<li>Sort representation concepts by P(r | I) and keep top <i>fbTerms</i>
+<li>Construct query Q_RM as: <tt>#weight( P(r_1 | I) r_1 ... P(r_fbTerms | I ) r_fbTerms )</tt>
+<li>Construct expanded query as: <tt>#weight( fbOrigWeight Q 1-fbOrigWeight Q_RM )</tt>
+<li>Retrieve documents based on expanded query
+</ol>
+
+<h4>Named Page Finding / Homepage Finding</h4>
+Named page finding and homepage finding are examples of known-item search. That is, the user knows some
+page exists, and is attempting to find it. One popular approach to known-item search is to use a mixture
+of context language models. This can easily be expressed in the Indri query language. For example, for the
+query "bbc news", the following query would be constructed:
+<br><br>
+<div class="example">
+<pre>
+#combine( #wsum( 5.0 bbc.(title) 3.0 bbc.(anchor) 1.0 bbc )
+    #wsum( 5.0 news.(title) 3.0 news.(anchor) 1.0 news ) )
+</pre>
+</div>
+
+<br>
+For each term in the query, the #wsum operator constructs a mixture model from the
+<tt>title</tt>, <tt>anchor</tt>, and whole document context language models and weights each model appropriately.
+The scores for the two terms are then #combined together.
+
+
+
+
+
+
+
+<h2>Accès aux documents</h2>
+
+Il est possible d'accéder au texte (pré-traité ou non) des documents
+
+<pre><code class='json'>{
+  "command": "document",
+  "type": TYPE,
+  "binary": false/true,
+  "docno": DOCNO
+}
+</code></pre>
+
+où <code>TYPE</code> est le type de contenu (<code>raw</code> ou <code>bow</code>). Attention,
+le mode <code>raw</code> ne fonctionnera pas pour tous les documents !
+Si <code>binary</code> est vrai, la chaîne renvoyée sera en binaire (à utiliser pour être sûr d'avoir un résultat)
+
+<ul>
+    <li>raw: le document tel qu'il a été extrait du Web</li>
+    <li>bow: la séquence des mots; vous pouvez connaitre le titre en regardant l'intervalle donné par fields</li>
+</ul>
+
+
+<h2 id="srun">Récupérer l'ID d'un document</h2>
+
+<p>Pour obtenir l'idenfifiant interne étant donné un identifiant externe </p>
+<pre><code class='json'>{
+  "command": "docid",
+  "docno": DOCNO
+}
+</code></pre>
+
+La réponse sera un entier (l'ID du document) ou bien un message d'erreur
+
+
+<h2 id="srun">Soumettre un run</h2>
+
+
+
+<pre><code class='json'>{
+  "command": "submit",
+  "name": "nom du groupe",
+  "password": "mot de passe",
+  "run": FICHIER
+}
+</code></pre>
+où FICHIER est un fichier au format du RUN. Les résultats (global/par question)
+sont renvoyés.
+
+Les résultats courants sont donnés sur le <a target="_blank" href="leaderboard.php">leaderboard</a>.
+
+
+
+
+<!-- Autre -->
+
+
+
+
+<h1>Word embeddings</h1>
+
+<h2>Word2vec</h2>
+
+<p>Pre-trained word vectors from <a href="https://code.google.com/archive/p/word2vec/">word2vec</a> website</p>
+
+<p class="cite">We are publishing pre-trained vectors trained on part of Google News dataset (about 100 billion words). The model contains 300-dimensional vectors for 3 million words and phrases. The phrases were obtained using a simple data-driven approach described in [2]. The archive is available here: <a href="data/GoogleNews-vectors-negative300.bin.gz">GoogleNews-vectors-negative300.bin.gz</a>.</p>
+
+<p>
+	Format binaire (vous pouvez les lire avec <a href="read_word2vec.py">ce programme python)</a>:
+	<ul>
+		<li>Première ligne: nombre de mots et dimension <em>d</em></li>
+		<li>Chaque ligne: mot suivi d'un espace, puis <em>d</em> nombres réels (<code>float32</code>)</li>
+	</ul>
+
+	Attention, les "mots" peuvent correspondrent à des suites de mot (séparation: _), par exemple "Tata_Motors".
+</p>
+
+<h2>Glove</h2>
+
+<p>Pre-trained word vectors from <a href="http://nlp.stanford.edu/projects/glove/">Glove website</a>.</p>
+
+<div class="cite">This data is made available under the Public Domain Dedication and License v1.0 whose full text can be found at: http://www.opendatacommons.org/licenses/pddl/1.0/.
+<ul><li>Wikipedia 2014 + Gigaword 5 (6B tokens, 400K vocab, uncased, 50d, 100d, 200d, &amp; 300d vectors, 822 MB download): <a href="data/<glove.6B.zip">glove.6B.zip</a></li>
+<li>Common Crawl (42B tokens, 1.9M vocab, uncased, 300d vectors, 1.75 GB download): <a href="data/glove.42B.300d.zip">glove.42B.300d.zip</a></li>
+<li>Common Crawl (840B tokens, 2.2M vocab, cased, 300d vectors, 2.03 GB download): <a href="data/glove.840B.300d.zip">glove.840B.300d.zip</a></li>
+<li>Twitter (2B tweets, 27B tokens, 1.2M vocab, uncased, 25d, 50d, 100d, &amp; 200d vectors, 1.42 GB download): <a href="data/<glove.twitter.27B.zip">glove.twitter.27B.zip</a></li>
+</ul>
+</div>
+
+
+<h1>Outils de développement</h1>
+
+Voici des liens vers une documentation locale
+<ul>
+    <li><a href="doc/keras">Keras</a></li>
+</ul>
+
+
+<h1 id="pointeurs">Quelques pointeurs</h1>
+
+<p>
+<ul>
+<li> Hackdays précédents: <a href="http://hackday.lip6.fr/pmwiki.php">http://hackday.lip6.fr/pmwiki.php</a></li>
+<li> RI interactive / dynamique:
+<ul>
+<li>Tutorial SIGIR 2014: <a href="http://www.slideshare.net/marcCsloan/dynamic-information-retrieval-tutorial">http://www.slideshare.net/marcCsloan/dynamic-information-retrieval-tutorial</a></li>
+<li>Dynamic information retrieval: <a href="http://irsg.bcs.org/informer/2015/04/dynamic-information-retrieval-modeling/">http://irsg.bcs.org/informer/2015/04/dynamic-information-retrieval-modeling/</a></li>
+</ul>
+</li>
+<li>Moteur de recherche Indri:<a href="http://www.lemurproject.org/indri/">http://www.lemurproject.org/indri/</a></li>
+<li>Mesures d'évaluation ((c) Mohand Boughanem): <a href="docs/MAP.pdf">MAP, P@k</a></li>
+</ul>
+</p>
+
+</div> <!-- main -->
+</body>
+</html>
